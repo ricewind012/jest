@@ -1,2 +1,14 @@
-@import "dist/shared.css";
-@import "dist/web.css";
+/* ==UserStyle==
+@name           XDDDD
+@namespace      github.com/ricewind012/juxtopposed-steam-redesign
+@version        1.0.0
+@description    The redesign from Juxtopposed
+@author         ricewind
+==/UserStyle== */
+
+@-moz-document domain("steamcommunity.com"), domain("steampowered.com") {
+
+@import url("https://rawcdn.githack.com/ricewind012/jest/88f84063cd0708eb3e0bb67fbca046b658f12109/dist/shared.css");
+@import url("https://rawcdn.githack.com/ricewind012/jest/88f84063cd0708eb3e0bb67fbca046b658f12109/dist/web.css");
+@import url("https://rawcdn.githack.com/ricewind012/jest/88f84063cd0708eb3e0bb67fbca046b658f12109/dist/web_shared.css");
+}
