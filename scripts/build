@@ -1,0 +1,80 @@
+#!/bin/sh -e
+
+DIST_DIR=dist
+SRC_DIR=src
+
+name=$DIST_DIR/$1
+version=1.0.0
+
+import_file_shared=$DIST_DIR/web_shared.css
+import_file_web=import_web.css
+
+# Build
+mkdir -p "$DIST_DIR"
+rm -f "$name.css"
+npx postcss "$SRC_DIR/$1/**/*.scss" \
+	--base "$SRC_DIR" \
+	--dir "$DIST_DIR" \
+	--ext css
+
+# Put files used in both client & web in web_shared.css
+shared_files="
+	common/bbcodes
+	common/gamepaddialog
+	common/steamavatar
+	common/throbber
+	controls/gamepaddialog
+	library/events/apppartnereventspage
+	library/events/discussionwidget
+	library/events/eventbbcodeparser
+	library/events/eventdescriptionstorecapsule
+	library/events/eventexternalimage
+	library/events/eventreminder
+	library/events/gamehover
+	library/events/localdateandtime
+	library/events/partnereventdisplay
+	library/events/salepreviewwidgets
+	library/events/youtubeembed
+	modals/awardmodal
+	modals/discussionwidget
+	popups/contextmenus/contextmenu
+	popups/contextmenus/eventreminder
+	popups/notifications/notificationcontent
+	popups/notifications/shorttemplates
+	popups/notifications/standardtemplates
+	popups/notifications/steamtemplates
+	popups/notifications/titlebarcontrols
+	popups/tooltips/localdateandtime
+	popups/tooltips/tooltip
+"
+
+if [ "$1" = client ]; then
+	rm -f "$import_file_shared"
+	for file in $shared_files; do
+		if [ ! -f "$file" ]; then
+			continue
+		fi
+
+		file=$DIST_DIR/client/$file.css
+		cat "$file" >> "$import_file_shared"
+	done
+fi
+
+# Let users use this as a userstyle
+header='/* ==UserStyle==
+@name           XDDDD
+@namespace      github.com/ricewind012/juxtopposed-steam-redesign
+@version        %s
+@description    The redesign from Juxtopposed
+@author         ricewind
+==/UserStyle== */
+
+@-moz-document domain("steamcommunity.com"), domain("steampowered.com") {
+'
+
+printf '%s\n' "$header" > "$import_file_web"
+printf '}\n' >> "$import_file_web"
+
+# Put everything else in 1 file
+find "$name" -type f -exec cat {} \; >> "$name.css"
+rm -rf "$name"

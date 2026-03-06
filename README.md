@@ -1,45 +1,62 @@
-# A more advanced theme template
+# Juxtopposed Steam Redesign
 
-This uses **your own** class map - more info on how it works [here][steam-theming-utils].
+The redesign from Juxtopposed. Check out the original [video](https://www.youtube.com/watch?v=cDY2p1CTkPo) & [design](https://www.figma.com/community/file/1302616100790619521/steam-redesign).
 
-## Example
+Note that this is only a theme and does not aim to recreate/follow the redesign 1:1 due to higher (than it already is with 24K LOC) maintenance cost.
 
-Let's say you have a file called `src/desktop/titlebarcontrols.css`:
+> [!WARNING]
+> The design makes everything bigger, and, as a consequence, doesn't support smaller window sizes; it has only been tested on maximized windows where applicable.
 
-```css
-/* Remove useless shit */
-#AnnouncementsButton,
-#GamepadUIToggle {
-  display: none;
-}
-```
+XD
 
-It will be compiled to the following code residing in `dist/desktop/titlebarcontrols.css`:
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
 
-```css
-/* Remove useless shit */
-._5wILZhsLODVwGfcJ0hKmJ /* AnnouncementsButton */,
-._3LKQ3S_yqrebeNLF6aeiog /* GamepadUIToggle */ {
-  display: none;
-}
-```
+> [!TIP]
+> Helpful advice for doing things better or more easily.
 
-This example resides in the `src` directory. The files whose class names will be replaced will reside in the `dist` directory.
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
 
-## Usage
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
 
-```sh
-# Install dependencies
-$ npm i
+## Roadmap
 
-# See the readable versions of classes
-$ npx steam-theming-utils make_readable_classes
+- [ ] Client
+  - [x] Dialogs/modals/notifications
+  - [ ] Friends & chat
+  - [x] Library
+  - [x] Overlay
+  - [ ] Millennium
+    - [ ] Options (maybe)
+    - [x] Change Window Params (only system titlebar)
+- [ ] Web
+  - [x] Account preferences
+  - [x] App hub
+  - [x] App page
+  - [x] Forum
+  - [x] Friend activity
+  - [x] Group
+  - [x] Guides
+  - [x] Market
+  - [ ] Points shop
+  - [x] Profile
+    - [x] Friends
+    - [ ] Games
+    - [x] Inventory
+    - [x] Settings
+    - [x] Trade offers
+  - [x] Shopping cart
+  - [x] Store home
+  - [ ] Wishlist
+  - [x] Workshop
 
-# ...and build!
-$ npm run build
-```
+### Problems
 
-[Prettier][prettier], a CSS/JS formatter, is also included as a dependency of [steam-theming-utils][steam-theming-utils].
-
-[prettier]: https://prettier.io
-[steam-theming-utils]: https://github.com/ricewind012/steam-theming-utils
+| Where                   | Why                                         |
+| ----------------------- | ------------------------------------------- |
+| Web -> Points shop      | idgaf                                       |
+| Web -> Profile -> Games | Broken, unable to theme with current method |
+| Web -> Market           | New filter dialog & item info not yet done. |
+| Web -> Wishlist         | Broken, unable to theme with current method |
