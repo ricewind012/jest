@@ -3,11 +3,8 @@
 DIST_DIR=dist
 SRC_DIR=src
 
-name=$DIST_DIR/$1
-version=1.0.0
-
 import_file_shared=$DIST_DIR/web_shared.css
-import_file_web=import_web.css
+name=$DIST_DIR/$1
 
 # Build
 mkdir -p "$DIST_DIR"
@@ -59,21 +56,6 @@ if [ "$1" = client ]; then
 		cat "$file" >> "$import_file_shared"
 	done
 fi
-
-# Let users use this as a userstyle
-header='/* ==UserStyle==
-@name           XDDDD
-@namespace      github.com/ricewind012/juxtopposed-steam-redesign
-@version        %s
-@description    The redesign from Juxtopposed
-@author         ricewind
-==/UserStyle== */
-
-@-moz-document domain("steamcommunity.com"), domain("steampowered.com") {
-'
-
-printf '%s\n' "$header" > "$import_file_web"
-printf '}\n' >> "$import_file_web"
 
 # Put everything else in 1 file
 find "$name" -type f -exec cat {} \; >> "$name.css"

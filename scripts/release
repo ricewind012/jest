@@ -9,6 +9,17 @@ JASONS='package.json skin.json'
 STEAM_CLIENT_FILE=import_client.css
 STEAM_WEB_FILE=import_web.css
 
+USERSTYLE_HEADER='/* ==UserStyle==
+@name           XDDDD
+@namespace      github.com/ricewind012/juxtopposed-steam-redesign
+@version        %s
+@description    The redesign from Juxtopposed
+@author         ricewind
+==/UserStyle== */
+
+@-moz-document domain("steamcommunity.com"), domain("steampowered.com") {
+'
+
 log() {
 	printf '\033[32;0;1m%s\033[m\n' "$1" >&2
 }
@@ -25,7 +36,6 @@ git_commit_as_ci() {
 }
 
 build_import_file() {
-	rm -f "$2"
 	for file in $1; do
 		printf '@import url("https://rawcdn.githack.com/%s/%s/%s/%s.css");\n' \
 			"$repo_url" "$last_dist_commit" "$DIST_DIR" "$file" >> "$2"
@@ -81,8 +91,11 @@ cp -r "$TMPDIR/$DIST_DIR" .
 
 repo_url=$(git remote get-url origin)
 repo_url=${repo_url#'https://github.com/'}
+rm -f "$STEAM_CLIENT_FILE"
 build_import_file 'client shared' "$STEAM_CLIENT_FILE"
+printf "$USERSTYLE_HEADER\n" "$next" > "$STEAM_WEB_FILE"
 build_import_file 'shared web web_shared' "$STEAM_WEB_FILE"
+printf '}\n' >> "$STEAM_WEB_FILE"
 
 for file in $JASONS; do
 	sed -i "s/\"version\": \".*\"/\"version\": \"$next\"/" "$file"
