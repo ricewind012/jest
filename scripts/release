@@ -93,7 +93,7 @@ repo_url=$(git remote get-url origin)
 repo_url=${repo_url#'https://github.com/'}
 rm -f "$STEAM_CLIENT_FILE"
 build_import_file 'client shared' "$STEAM_CLIENT_FILE"
-printf "$USERSTYLE_HEADER\n" "$next" > "$STEAM_WEB_FILE"
+printf "$USERSTYLE_HEADER" "$next" > "$STEAM_WEB_FILE"
 build_import_file 'shared web web_shared' "$STEAM_WEB_FILE"
 printf '}\n' >> "$STEAM_WEB_FILE"
 
