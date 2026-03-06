@@ -7,7 +7,7 @@ DIST_BRANCH=dist
 DIST_DIR=dist
 JASONS='package.json skin.json'
 STEAM_CLIENT_FILE=import_client.css
-STEAM_WEB_FILE=import_web.css
+STEAM_WEB_FILE=import_web.user.css
 
 USERSTYLE_HEADER='/* ==UserStyle==
 @name           XDDDD
