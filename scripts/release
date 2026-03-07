@@ -5,10 +5,10 @@ export GH_TOKEN=$(gh auth token)
 
 DIST_BRANCH=dist
 DIST_DIR=dist
+FILE_CLIENT=import_client.css
+FILE_USERSTYLE=import_web.user.css
+FILE_WEB=import_web.css
 JASONS='package.json skin.json'
-STEAM_CLIENT_FILE=import_client.css
-STEAM_WEB_FILE=import_web.user.css
-
 USERSTYLE_HEADER='/* ==UserStyle==
 @name           XDDDD
 @namespace      github.com/ricewind012/juxtopposed-steam-redesign
@@ -91,17 +91,18 @@ cp -r "$TMPDIR/$DIST_DIR" .
 
 repo_url=$(git remote get-url origin)
 repo_url=${repo_url#'https://github.com/'}
-rm -f "$STEAM_CLIENT_FILE"
-build_import_file 'client shared' "$STEAM_CLIENT_FILE"
-printf "$USERSTYLE_HEADER" "$next" > "$STEAM_WEB_FILE"
-build_import_file 'shared web web_shared' "$STEAM_WEB_FILE"
-printf '}\n' >> "$STEAM_WEB_FILE"
+rm -f "$FILE_CLIENT" "$FILE_WEB"
+build_import_file 'client shared' "$FILE_CLIENT"
+build_import_file 'shared web web_shared' "$FILE_WEB"
+printf "$USERSTYLE_HEADER" "$next" > "$FILE_USERSTYLE"
+build_import_file 'shared web web_shared' "$FILE_USERSTYLE"
+printf '}\n' >> "$FILE_USERSTYLE"
 
 for file in $JASONS; do
 	sed -i "s/\"version\": \".*\"/\"version\": \"$next\"/" "$file"
 done
 
-git add $JASONS "$STEAM_CLIENT_FILE" "$STEAM_WEB_FILE"
+git add $JASONS "$FILE_CLIENT" "$FILE_USERSTYLE"
 git_commit_as_ci "$commit_msg"
 git push
 
