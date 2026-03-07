@@ -30,13 +30,6 @@ git_branch_exists() {
 	git show-ref --verify --quiet "refs/heads/$1"
 }
 
-git_commit_as_ci() {
-	git \
-		-c "user.name=github-actions[bot]" \
-		-c "user.email=41898282+github-actions[bot]@users.noreply.github.com" \
-		commit -m "$1"
-}
-
 build_import_file() {
 	for file in $1; do
 		printf '@import url("https://rawcdn.githack.com/%s/%s/%s/%s.css");\n' \
@@ -64,7 +57,7 @@ for i in client shared web; do
 	npm run build "$i"
 done
 
-# I don't know git, so in case it fucks up...
+# In case something fucks up...
 set -x
 
 # Commit dist to... the dist branch.
@@ -77,7 +70,7 @@ mkdir -p "$DIST_DIR"
 cp "$TMPDIR/$DIST_DIR/"* "$DIST_DIR"
 git add "$DIST_DIR"
 # No files to commit if failed, no reason to cry over this...
-git_commit_as_ci "$commit_msg" || :
+git commit -m "$commit_msg" || :
 # As Millennium is currently only able to download the default branch, the
 # Steam theme will be using githack, as GitHub doesn't serve the proper
 # "Content-Type" header. This needs a commit hash instead of a branch because
@@ -110,7 +103,7 @@ npx semantic-release --no-ci --plugins '
 	@semantic-release/github
 '
 git add $JASONS "$FILE_CLIENT" "$FILE_USERSTYLE"
-git_commit_as_ci "$commit_msg"
+git commit -m "$commit_msg"
 git push
 
 set +x
