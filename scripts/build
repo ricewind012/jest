@@ -3,60 +3,55 @@
 DIST_DIR=dist
 SRC_DIR=src
 
-import_file_shared=$DIST_DIR/web_shared.css
-name=$DIST_DIR/$1
+web_shared_bundle=$DIST_DIR/web_shared.css
+world_name=$DIST_DIR/$1
+
+bundle() {
+	out=$1
+	shift
+	find $1 -type f -exec cat {} \; > "$out"
+}
 
 # Build
 mkdir -p "$DIST_DIR"
-rm -f "$name.css"
 npx postcss "$SRC_DIR/$1/**/*.scss" \
 	--base "$SRC_DIR" \
 	--dir "$DIST_DIR" \
 	--ext css
 
-# Put files used in both client & web in web_shared.css
-shared_files="
-	common/bbcodes
-	common/gamepaddialog
-	common/steamavatar
-	common/throbber
-	controls/gamepaddialog
-	library/events/apppartnereventspage
-	library/events/discussionwidget
-	library/events/eventbbcodeparser
-	library/events/eventdescriptionstorecapsule
-	library/events/eventexternalimage
-	library/events/eventreminder
-	library/events/gamehover
-	library/events/localdateandtime
-	library/events/partnereventdisplay
-	library/events/salepreviewwidgets
-	library/events/youtubeembed
-	modals/awardmodal
-	modals/discussionwidget
-	popups/contextmenus/contextmenu
-	popups/contextmenus/eventreminder
-	popups/notifications/notificationcontent
-	popups/notifications/shorttemplates
-	popups/notifications/standardtemplates
-	popups/notifications/steamtemplates
-	popups/notifications/titlebarcontrols
-	popups/tooltips/localdateandtime
-	popups/tooltips/tooltip
+# Bundle files used in both client & web in web_shared.css
+client_dir=$DIST_DIR/client
+web_shared_files="
+	$client_dir/common/bbcodes.css
+	$client_dir/common/gamepaddialog.css
+	$client_dir/common/steamavatar.css
+	$client_dir/common/throbber.css
+	$client_dir/controls/gamepaddialog.css
+	$client_dir/library/events/apppartnereventspage.css
+	$client_dir/library/events/discussionwidget.css
+	$client_dir/library/events/eventbbcodeparser.css
+	$client_dir/library/events/eventdescriptionstorecapsule.css
+	$client_dir/library/events/eventexternalimage.css
+	$client_dir/library/events/eventreminder.css
+	$client_dir/library/events/gamehover.css
+	$client_dir/library/events/localdateandtime.css
+	$client_dir/library/events/partnereventdisplay.css
+	$client_dir/library/events/salepreviewwidgets.css
+	$client_dir/library/events/youtubeembed.css
+	$client_dir/modals/awardmodal.css
+	$client_dir/modals/discussionwidget.css
+	$client_dir/popups/contextmenus/contextmenu.css
+	$client_dir/popups/contextmenus/eventreminder.css
+	$client_dir/popups/notifications/notificationcontent.css
+	$client_dir/popups/notifications/shorttemplates.css
+	$client_dir/popups/notifications/standardtemplates.css
+	$client_dir/popups/notifications/steamtemplates.css
+	$client_dir/popups/notifications/titlebarcontrols.css
+	$client_dir/popups/tooltips/localdateandtime.css
+	$client_dir/popups/tooltips/tooltip.css
 "
 
-if [ "$1" = client ]; then
-	rm -f "$import_file_shared"
-	for file in $shared_files; do
-		if [ ! -f "$file" ]; then
-			continue
-		fi
-
-		file=$DIST_DIR/client/$file.css
-		cat "$file" >> "$import_file_shared"
-	done
-fi
-
-# Put everything else in 1 file
-find "$name" -type f -exec cat {} \; >> "$name.css"
-rm -rf "$name"
+# Bundle everything else in 1 file
+[ "$1" = client ] && bundle "$web_shared_bundle" $web_shared_files
+bundle "$world_name.css" "$world_name"
+rm -rf "$world_name"
