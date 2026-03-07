@@ -1,4 +1,6 @@
 #!/bin/sh -e
+#
+# Entirely CI-free release script.
 
 : "${TMPDIR:=/tmp}"
 export GH_TOKEN=$(gh auth token)
