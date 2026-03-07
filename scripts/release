@@ -91,7 +91,7 @@ cp -r "$TMPDIR/$DIST_DIR" .
 
 repo_url=$(git remote get-url origin)
 repo_url=${repo_url#'https://github.com/'}
-rm -f "$FILE_CLIENT" "$FILE_WEB"
+rm -f "$FILE_CLIENT" "$FILE_WEB" "$FILE_USERSTYLE"
 build_import_file 'client shared' "$FILE_CLIENT"
 build_import_file 'shared web web_shared' "$FILE_WEB"
 printf "$USERSTYLE_HEADER" "$next" > "$FILE_USERSTYLE"
