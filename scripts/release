@@ -102,6 +102,11 @@ for file in $JASONS; do
 	sed -i "s/\"version\": \".*\"/\"version\": \"$next\"/" "$file"
 done
 
+npx semantic-release --no-ci --plugins '
+	@semantic-release/commit-analyzer,
+	@semantic-release/release-notes-generator,
+	@semantic-release/github
+'
 git add $JASONS "$FILE_CLIENT" "$FILE_USERSTYLE"
 git_commit_as_ci "$commit_msg"
 git push
